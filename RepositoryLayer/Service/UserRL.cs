@@ -1,4 +1,5 @@
-﻿using CommonLayer.Model;
+﻿using CommonLayer;
+using CommonLayer.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
@@ -46,6 +47,29 @@ namespace RepositoryLayer.Service
                     return null;
                 }
 
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public string ForgetPassword(string email)
+        {
+            try
+            {
+                var emailcheck = fundooContext.UserTable.FirstOrDefault(x => x.Email == email);
+                if (emailcheck != null)
+                {
+                    var token = GenerateSecurityToken(emailcheck.Email, emailcheck.UserId);
+                    MSMQ mSMQ = new MSMQ();
+                    mSMQ.sendData2Queue(token);
+                    return token;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
@@ -103,6 +127,9 @@ namespace RepositoryLayer.Service
         }
     }
 
-    //For login
+
+
+
+
 
 }

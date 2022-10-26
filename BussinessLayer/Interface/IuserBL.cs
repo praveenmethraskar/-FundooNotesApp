@@ -12,5 +12,6 @@ namespace BussinessLayer.Interface
 
         //Added for Login
         public string Login(UserLoginModel userLoginModel);
+        public string ForgetPassword(string email);
     }
 }
