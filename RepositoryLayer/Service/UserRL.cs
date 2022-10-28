@@ -77,7 +77,7 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public bool ResetPassword(string email, string newPassword, string confirmPassword)
+        public string ResetPassword(string email, string newPassword, string confirmPassword)
         {
 
             try
@@ -88,11 +88,11 @@ namespace RepositoryLayer.Service
                     var user = fundooContext.UserTable.FirstOrDefault(x => x.Email == email);
                     user.Password = newPassword;
                     fundooContext.SaveChanges();
-                    return true;
+                    return user.Password;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
 
             }

@@ -52,7 +52,7 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
-        public bool ResetPassword(string email, string newPassword, string confirmPassword)
+        public string ResetPassword(string email, string newPassword, string confirmPassword)
         {
             try
             {
