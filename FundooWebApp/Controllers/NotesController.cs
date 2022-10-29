@@ -50,12 +50,13 @@ namespace FundooWebApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("Retrieve")]
-        public IActionResult retrieveNotes()
+        public IActionResult retrieveNotes(long noteid)
         {
             try
             {
                 var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                var result = iNotesBL.retrieveNotes(userId);
+                
+                var result = iNotesBL.retrieveNotes(userId,noteid);
                 if (result != null)
                 {
                     return Ok(new { success = true, message = "Retrieving notes successful", data = result });
