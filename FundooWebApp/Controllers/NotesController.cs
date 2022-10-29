@@ -98,5 +98,35 @@ namespace FundooWebApp.Controllers
             }
             catch (System.Exception) { throw; }
         }
+
+
+        [Authorize]
+        [HttpPut]
+        [Route("Update")]
+        public IActionResult UpdateNote(long noteId, NotesModel notesModel)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var result = iNotesBL.UpdateNote(userId, noteId, notesModel);
+
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Updating data Successful ", data = result });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Updating data UnSuccessful" });
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
+
+
     }
 }
