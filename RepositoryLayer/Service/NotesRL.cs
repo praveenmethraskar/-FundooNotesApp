@@ -60,11 +60,11 @@ namespace RepositoryLayer.Service
 
         }
 
-        public IEnumerable<NotesEntity> retrieveNotes(long userId)
+        public IEnumerable<NotesEntity> retrieveNotes(long userId, long noteId)
         {
             try
             {
-                var result = fundooContext.NotesTable.Where(x => x.UserId == userId);
+                var result = fundooContext.NotesTable.Where(x => x.noteid == noteId);
 
                 return result;
             }
