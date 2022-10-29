@@ -10,5 +10,6 @@ namespace BussinessLayer.Interface
     {
         public NotesEntity createNotes(NotesModel notesModel, long userId);
         public IEnumerable<NotesEntity> retrieveNotes(long userId, long noteId);
+        public bool DeleteNotesId(long noteId);
     }
 }

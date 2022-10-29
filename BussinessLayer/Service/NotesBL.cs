@@ -40,6 +40,16 @@ namespace BussinessLayer.Service
                 throw new Exception();
             }
         }
-
+        public bool DeleteNotesId(long noteId)
+        {
+            try
+            {
+                return iNotesRL.DeleteNotesId(noteId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
+        }
     }
 }

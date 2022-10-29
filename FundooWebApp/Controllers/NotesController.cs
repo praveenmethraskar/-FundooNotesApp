@@ -72,5 +72,31 @@ namespace FundooWebApp.Controllers
             }
             catch (System.Exception){throw;}
         }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult DeleteNotesId(long noteid)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+
+                var result = iNotesBL.DeleteNotesId(noteid);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Deleting notes successful", data = result });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Deleting unsuccessful"
+                    });
+                }
+            }
+            catch (System.Exception) { throw; }
+        }
     }
 }
