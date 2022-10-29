@@ -14,4 +14,10 @@ And also for login module we have use jwt token for authorising user uniquely.
 JWT link-https://www.c-sharpcorner.com/article/implement-jwt-in-asp-net-core-3-1/
 
 6. creating user registraion, login and forget password api's
+    API for Registration :https://localhost:44300/api/User/Registration
+    API for Login : https://localhost:44300/api/User/Login
+    API for Forgot Password : https://localhost:44300/api/User/ForgetPassword
+    API for Reset Password : https://localhost:44300/api/User/ResetPassword
 7. then creating notes api's. in this we create api's like createnotes, retrievenotes, updatenotes, deletenotes
+    API for creating notes : https://localhost:44300/api/Notes/CreateNotes
+    API for retrieving notes : https://localhost:44300/api/Notes/Retrieve
