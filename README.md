@@ -1,4 +1,4 @@
-# FundooNotesApp
+# -FundooNotesApp
 
 1. Creating Fundoo project setup with three layers i.e, CommonLayer,RepositoryLayer,BusinessLAyer
 2. Starts from common layer to repository layer and then to  business layer to fundoo Project. The flow of the project is common layer-Repository Layer-Business Layer -Fundoo Project.
