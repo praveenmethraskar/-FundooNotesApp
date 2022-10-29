@@ -26,7 +26,6 @@ namespace FundooWebApp.Controllers
             try
             {
                 var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                //var resultlog = iNotesBL.createNotes(userId);
                 var result = iNotesBL.createNotes(notesModel, userId);
                 if (result != null)
                 {
@@ -51,31 +50,26 @@ namespace FundooWebApp.Controllers
         [Authorize]
         [HttpGet]
         [Route("Retrieve")]
-        public IActionResult retrieveNotes(NotesModel notesModel)
+        public IActionResult retrieveNotes()
         {
             try
             {
                 var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                //var resultlog = iNotesBL.createNotes(userId);
                 var result = iNotesBL.retrieveNotes(userId);
                 if (result != null)
                 {
-                    return Ok(new { success = true, message = "Created notes successful", data = result });
+                    return Ok(new { success = true, message = "Retrieving notes successful", data = result });
                 }
                 else
                 {
                     return BadRequest(new
                     {
                         success = false,
-                        message = "Created notes unsuccessful"
+                        message = "Retrieving unsuccessful"
                     });
-
                 }
             }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            catch (System.Exception){throw;}
         }
     }
 }

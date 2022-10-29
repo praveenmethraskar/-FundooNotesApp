@@ -29,7 +29,7 @@ namespace BussinessLayer.Service
             }
         }
 
-        public NotesEntity retrieveNotes(long userId)
+        public IEnumerable<NotesEntity> retrieveNotes(long userId)
         {
             try
             {

@@ -60,36 +60,13 @@ namespace RepositoryLayer.Service
 
         }
 
-        public NotesEntity retrieveNotes(long userId)
+        public IEnumerable<NotesEntity> retrieveNotes(long userId)
         {
             try
             {
-                NotesEntity notesEntityobj = new NotesEntity();
-                var result = fundooContext.NotesTable.Where(x => x.UserId==userId);
-                //var result = fundooContext.NotesTable.FirstOrDefault(x => x.UserId == userId);
-                
-                if (result != null)
-                {
-                    notesEntityobj.UserId = userId;
-                    var retriving = from NotesTable in result select NotesTable;
+                var result = fundooContext.NotesTable.Where(x => x.UserId == userId);
 
-                    fundooContext.NotesTable.Select(x=>x.title);
-                    fundooContext.NotesTable.Select(x => x.Desciption);
-                    fundooContext.NotesTable.Select(x => x.remainder);
-                    fundooContext.NotesTable.Select(x => x.color);
-                    fundooContext.NotesTable.Select(x => x.image);
-                    fundooContext.NotesTable.Select(x => x.pin);
-                    fundooContext.NotesTable.Select(x => x.trash);
-                    fundooContext.NotesTable.Select(x => x.created);
-                    fundooContext.NotesTable.Select(x => x.edited);
-
-                    fundooContext.SaveChanges();
-                    return notesEntityobj;
-                }
-                else
-                {
-                    return null;
-                }
+                return result;
             }
             catch (Exception)
             {
