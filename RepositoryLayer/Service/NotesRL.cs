@@ -142,7 +142,6 @@ namespace RepositoryLayer.Service
             try
             {
                 var result = fundooContext.NotesTable.FirstOrDefault(x => x.noteid == noteId);
-                //Pin is bydefault true so check its working use if else condition
 
                 if (result.pin == false)
                 {
@@ -153,6 +152,63 @@ namespace RepositoryLayer.Service
                 else
                 {
                     result.pin = false;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public bool Archieve(long noteId)
+        {
+            try
+            {
+                var result = fundooContext.NotesTable.FirstOrDefault(x => x.noteid == noteId);
+
+                if (result.archive == false)
+                {
+                    result.archive = true;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    result.archive = false;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+        public bool Trash(long noteId)
+        {
+            try
+            {
+                var result = fundooContext.NotesTable.FirstOrDefault(x => x.noteid == noteId);
+
+                if (result.trash == false)
+                {
+                    result.trash = true;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    result.trash = false;
                     fundooContext.SaveChanges();
                     return true;
                 }

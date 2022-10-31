@@ -78,6 +78,32 @@ namespace BussinessLayer.Service
             }
         }
 
+        public bool Archieve(long noteId)
+        {
+            try
+            {
+
+                return iNotesRL.Archieve(noteId);
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
+        }
+
+
+        public bool Trash(long noteId)
+        {
+            try
+            {
+                return iNotesRL.Trash(noteId);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
 
     }
 }

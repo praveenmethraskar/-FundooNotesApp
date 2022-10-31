@@ -151,6 +151,58 @@ namespace FundooWebApp.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPut]
+        [Route("Archieve")]
+
+        public IActionResult Archieve(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+                var result = iNotesBL.Archieve(noteId);
+
+                if (result!=null)
+                {
+                    return Ok(new { success = true, message = "Archieved Successful" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Archieved Unsuccesful" });
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("Trash")]
+
+        public IActionResult Trash(long noteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
+                var result = iNotesBL.Trash(noteId);
+
+                if (result!=null)
+                {
+                    return Ok(new { success = true, message = "Trashed Successful" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Trashed Unsuccesful" });
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
 
     }
 }
