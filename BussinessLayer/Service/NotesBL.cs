@@ -64,5 +64,20 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+
+        public bool PinNotes(long noteId)
+        {
+            try
+            {
+                return iNotesRL.PinNotes(noteId);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+
     }
 }

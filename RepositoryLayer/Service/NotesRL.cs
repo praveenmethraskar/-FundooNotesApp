@@ -136,5 +136,37 @@ namespace RepositoryLayer.Service
             }
         }
 
+
+        public bool PinNotes(long noteId)
+        {
+            try
+            {
+                var result = fundooContext.NotesTable.FirstOrDefault(x => x.noteid == noteId);
+                //Pin is bydefault true so check its working use if else condition
+
+                if (result.pin == false)
+                {
+                    result.pin = true;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    result.pin = false;
+                    fundooContext.SaveChanges();
+                    return true;
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
     }
 }
