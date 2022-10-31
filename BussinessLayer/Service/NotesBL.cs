@@ -103,7 +103,18 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+        public NotesEntity BgColor(long userId, long noteId, NotesModel notesModel)
+        {
+            try
+            {
+                return iNotesRL.UpdateNote(userId, noteId, notesModel);
+            }
+            catch (Exception e)
+            {
 
+                throw;
+            }
+        }
 
     }
 }
