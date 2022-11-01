@@ -134,7 +134,7 @@ namespace FundooWebApp.Controllers
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(x=>x.Type == "UserId").Value);
-                var result = iNotesBL.PinNotes(noteId);
+                var result = iNotesBL.PinNotes(noteId, userId);
 
                 if(result!=null)
                 {
@@ -160,7 +160,7 @@ namespace FundooWebApp.Controllers
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
-                var result = iNotesBL.Archieve(noteId);
+                var result = iNotesBL.Archieve(noteId, userId);
 
                 if (result!=null)
                 {
@@ -186,7 +186,7 @@ namespace FundooWebApp.Controllers
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
-                var result = iNotesBL.Trash(noteId);
+                var result = iNotesBL.Trash(noteId, userId);
 
                 if (result!=null)
                 {
@@ -207,12 +207,12 @@ namespace FundooWebApp.Controllers
         [Authorize]
         [HttpPut]
         [Route("BgColor")]
-        public IActionResult BgColor(long noteId, NotesModel notesModel)
+        public IActionResult BgColor(long noteId,string backgroundColor, NotesModel notesModel)
         {
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                var result = iNotesBL.BgColor(userId, noteId, notesModel);
+                var result = iNotesBL.BgColor(userId, noteId,backgroundColor, notesModel);
 
                 if (result != null)
                 {

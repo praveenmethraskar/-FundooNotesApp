@@ -65,11 +65,11 @@ namespace BussinessLayer.Service
             }
         }
 
-        public bool PinNotes(long noteId)
+        public bool PinNotes(long noteId, long userId)
         {
             try
             {
-                return iNotesRL.PinNotes(noteId);
+                return iNotesRL.PinNotes(noteId, userId);
             }
             catch (Exception e)
             {
@@ -78,12 +78,12 @@ namespace BussinessLayer.Service
             }
         }
 
-        public bool Archieve(long noteId)
+        public bool Archieve(long noteId, long userId)
         {
             try
             {
 
-                return iNotesRL.Archieve(noteId);
+                return iNotesRL.Archieve(noteId,userId);
             }
             catch(Exception e)
             {
@@ -92,22 +92,22 @@ namespace BussinessLayer.Service
         }
 
 
-        public bool Trash(long noteId)
+        public bool Trash(long noteId, long userId)
         {
             try
             {
-                return iNotesRL.Trash(noteId);
+                return iNotesRL.Trash(noteId,userId);
             }
             catch (Exception e)
             {
                 throw;
             }
         }
-        public NotesEntity BgColor(long userId, long noteId, NotesModel notesModel)
+        public NotesEntity BgColor(long userId, long noteId, string backgroundColor, NotesModel notesModel)
         {
             try
             {
-                return iNotesRL.UpdateNote(userId, noteId, notesModel);
+                return iNotesRL.BgColor(userId, noteId, backgroundColor, notesModel);
             }
             catch (Exception e)
             {

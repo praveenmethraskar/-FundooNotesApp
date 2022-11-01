@@ -138,7 +138,7 @@ namespace RepositoryLayer.Service
         }
 
 
-        public bool PinNotes(long noteId)
+        public bool PinNotes(long noteId, long userId)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public bool Archieve(long noteId)
+        public bool Archieve(long noteId, long userId)
         {
             try
             {
@@ -195,7 +195,7 @@ namespace RepositoryLayer.Service
         }
 
 
-        public bool Trash(long noteId)
+        public bool Trash(long noteId, long userId)
         {
             try
             {
@@ -224,22 +224,17 @@ namespace RepositoryLayer.Service
         }
 
 
-        public NotesEntity BgColor(long userId, long noteId, NotesModel notesModel)
+        public NotesEntity BgColor(long userId, long noteId, string backgroundColor, NotesModel notesModel)
         {
             try
             {
                 var notesEntityobj = fundooContext.NotesTable.FirstOrDefault(e => e.noteid == noteId);
-                if (notesEntityobj != null)
-                {
-                    notesEntityobj.color = notesModel.color;
 
+                notesEntityobj.color=backgroundColor;
+                fundooContext.NotesTable.Update(notesEntityobj);
+                
                     fundooContext.SaveChanges();
                     return notesEntityobj;
-                }
-                else
-                {
-                    return null;
-                }
 
             }
             catch (Exception e)
