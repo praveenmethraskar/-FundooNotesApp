@@ -1,5 +1,6 @@
 ﻿using CloudinaryDotNet;
 using CommonLayer.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
@@ -242,6 +243,44 @@ namespace RepositoryLayer.Service
                 throw e;
             }
 
+        }
+
+
+        public string ImageUploadNotes(IFormFile image, long noteId, long userId)
+        {
+            try
+            {
+                var result = fundooContext.NotesTable.FirstOrDefault(x=>x.noteid == noteId && x.UserId==userId);   
+                if (result!= null)
+                {
+                    Account account = new Account(
+                        this.iconfiguration["CloudinarySettings:CloudName"],
+                        this.iconfiguration["CloudinarySettings:ApiKey"],
+                        this.iconfiguration["CloudinarySettings:ApiSecret"]
+                        );
+
+                    Cloudinary cloudinary = new Cloudinary(account);
+                    var uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
+                    {
+                        File = new FileDescription(image.FileName, image.OpenReadStream()),
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    string imagePath = uploadResult.Url.ToString();
+
+                    result.image = imagePath;
+                    fundooContext.SaveChanges();
+                    return "Image Uploaded Successfully";
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
         }
 
 
