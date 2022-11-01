@@ -25,7 +25,7 @@ namespace FundooWebApp.Controllers
         {
             try
             {
-                var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Email").Value);
                 var result = iNotesBL.createNotes(notesModel, userId);
                 if (result != null)
                 {
