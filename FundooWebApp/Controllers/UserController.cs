@@ -1,7 +1,9 @@
 ﻿using CommonLayer.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryLayer.Interface;
+using System.Security.Claims;
 
 namespace FundooWebApp.Controllers
 {
@@ -87,6 +89,30 @@ namespace FundooWebApp.Controllers
 
             }
             catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("ResetPassword")]
+        public IActionResult ResetPassword(string newPassword, string confirmPassword)
+        {
+            try
+            {
+                var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
+                var resultlog = iuserBL.ResetPassword(email, newPassword, confirmPassword);
+                if (resultlog != null)
+                {
+                    return Ok(new { success = true, message = "Reset Successful", data = resultlog });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Reset Failed" });
+                }
+            }
+            catch(System.Exception)
             {
                 throw;
             }
