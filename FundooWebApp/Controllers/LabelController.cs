@@ -94,6 +94,28 @@ namespace FundooWebApp.Controllers
             catch(System.Exception) { throw; }
         }
 
+        [Authorize]
+        [HttpPut]
+        [Route("Edit")]
+
+        public IActionResult EditLabel(long noteId,long labelId, string labelName)
+        {
+            try
+            {
+                var result = iLabelBL.EditLabel(noteId,labelId, labelName);
+
+                if( result != null)
+                {
+                    return Ok(new { success = true, message = "Label Updated Successful", data = result }); 
+                }
+                else
+                {
+                    return Ok(new { success = false, message = "Label Updated Unsuccessful" });
+                }
+            }
+            catch(System.Exception ) { throw; }
+        }
+
 
     }
 }
