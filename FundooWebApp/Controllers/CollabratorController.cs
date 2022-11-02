@@ -21,7 +21,7 @@ namespace FundooWebApp.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("Addcollabarator")]
+        [Route("Addemail")]
         public IActionResult CreateNotes(string Email,long noteId)
         {
             try
@@ -46,6 +46,55 @@ namespace FundooWebApp.Controllers
             {
                 throw;
             }
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        [Route("Retrieve")]
+        public IActionResult retrieveCollaborate(long noteid)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+
+                var result = iCollabarateBL.retrieveCollaborate(noteid,userId);
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Retrieving email successful", data = result });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Retrieving  email unsuccessful"
+                    });
+                }
+            }
+            catch (System.Exception) { throw; }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("Delete")]
+
+        public IActionResult DeleteCollabarator(long Collabratorid)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+                var result = iCollabarateBL.DeleteCollabarator(Collabratorid,userId);
+                if(result != null)
+                {
+                    return Ok(new { success = true, message = "Delete Successful" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Delete Unsuccessful" });
+                }
+            }
+            catch(System.Exception) { throw; }
         }
 
     }

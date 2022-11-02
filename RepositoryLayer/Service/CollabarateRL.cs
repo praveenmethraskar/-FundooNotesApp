@@ -48,6 +48,46 @@ namespace RepositoryLayer.Service
             }
         }
 
+        public IEnumerable<CollabratorEntity> retrieveCollaborate(long noteId, long userId)
+        {
+            try
+            {
+
+                var result = fundooContext.CollabratorTable.Where(x => x.noteid == noteId && x.UserId == userId);
+                if (result!=null)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+
+
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool DeleteCollabarator(long Collabratorid, long noteId)
+        {
+            try
+            {
+                var result = fundooContext.CollabratorTable.FirstOrDefault(x => x.Collabratorid==Collabratorid);
+
+                fundooContext.CollabratorTable.Remove(result);
+
+                fundooContext.SaveChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+        }
 
     }
 }

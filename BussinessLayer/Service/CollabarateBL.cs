@@ -29,5 +29,28 @@ namespace BussinessLayer.Service
                 throw new Exception();
             }
         }
+        public IEnumerable<CollabratorEntity> retrieveCollaborate(long noteId, long userId)
+        {
+            try
+            {
+                return iCollabarateRL.retrieveCollaborate(noteId,userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
+        }
+
+        public bool DeleteCollabarator(long Collabratorid, long noteId)
+        {
+            try
+            {
+                return iCollabarateRL.DeleteCollabarator(Collabratorid, noteId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
