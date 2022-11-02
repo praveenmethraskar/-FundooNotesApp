@@ -10,6 +10,6 @@ namespace BussinessLayer.Interface
     {
         public CollabratorEntity AddCollabrate(string email, long noteId);
         public IEnumerable<CollabratorEntity> retrieveCollaborate(long noteId, long userId);
-        public bool DeleteCollabarator(long Collabratorid, long noteId);
+        public bool DeleteCollabarator(long Collabratorid);
     }
 }

@@ -41,11 +41,11 @@ namespace BussinessLayer.Service
             }
         }
 
-        public bool DeleteCollabarator(long Collabratorid, long noteId)
+        public bool DeleteCollabarator(long Collabratorid)
         {
             try
             {
-                return iCollabarateRL.DeleteCollabarator(Collabratorid, noteId);
+                return iCollabarateRL.DeleteCollabarator(Collabratorid);
             }
             catch (Exception ex)
             {
