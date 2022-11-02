@@ -1,7 +1,5 @@
-<<<<<<< HEAD
+
 # FundooNotesApp
-=======
-# -FundooNotesApp
 
 1. Creating Fundoo project setup with three layers i.e, CommonLayer,RepositoryLayer,BusinessLAyer
 2. Starts from common layer to repository layer and then to  business layer to fundoo Project. The flow of the project is common layer-Repository Layer-Business Layer -Fundoo Project.
@@ -24,4 +22,5 @@ JWT link-https://www.c-sharpcorner.com/article/implement-jwt-in-asp-net-core-3-1
 7. then creating notes api's. in this we create api's like createnotes, retrievenotes, updatenotes, deletenotes
     API for creating notes : https://localhost:44300/api/Notes/CreateNotes
     API for retrieving notes : https://localhost:44300/api/Notes/Retrieve
->>>>>>> 99ad73df35e3bf12ab9fb269cc25dd24e86e8728
+
+
