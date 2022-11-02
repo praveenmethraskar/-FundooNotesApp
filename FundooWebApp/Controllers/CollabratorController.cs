@@ -84,14 +84,14 @@ namespace FundooWebApp.Controllers
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
-                var result = iCollabarateBL.DeleteCollabarator(Collabratorid,userId);
+                var result = iCollabarateBL.DeleteCollabarator(Collabratorid);
                 if(result != null)
                 {
                     return Ok(new { success = true, message = "Delete Successful" });
                 }
                 else
                 {
-                    return BadRequest(new { success = false, message = "Delete Unsuccessful" });
+                    return BadRequest(new {success = false, message="Delete Unsuccessful"});
                 }
             }
             catch(System.Exception) { throw; }

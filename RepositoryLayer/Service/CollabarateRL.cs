@@ -52,7 +52,6 @@ namespace RepositoryLayer.Service
         {
             try
             {
-
                 var result = fundooContext.CollabratorTable.Where(x => x.noteid == noteId && x.UserId == userId);
                 if (result!=null)
                 {
@@ -62,9 +61,6 @@ namespace RepositoryLayer.Service
                 {
                     return null;
                 }
-
-
-
             }
             catch (Exception)
             {
@@ -72,7 +68,7 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public bool DeleteCollabarator(long Collabratorid, long noteId)
+        public bool DeleteCollabarator(long Collabratorid)
         {
             try
             {
