@@ -45,5 +45,33 @@ namespace FundooWebApp.Controllers
                 throw;
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("Retrieve")]
+        public IActionResult RetrieveLabel(long labelId)
+        {
+            try
+            {
+                var userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+
+                var result = iLabelBL.RetrieveLabel(labelId );
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Retrieving email successful", data = result });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Retrieving  email unsuccessful"
+                    });
+                }
+            }
+            catch (System.Exception) { throw; }
+        }
+
+
     }
 }

@@ -8,5 +8,6 @@ namespace BussinessLayer.Interface
     public interface ILabelBL
     {
         public LabelEntity AddLabel(long noteId, long userId, string labelName);
+        public IEnumerable<LabelEntity> RetrieveLabel(long labelId);
     }
 }
