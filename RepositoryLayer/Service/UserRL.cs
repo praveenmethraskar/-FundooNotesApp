@@ -24,16 +24,55 @@ namespace RepositoryLayer.Service
             this.fundooContext = fundooContext;
             this.iconfiguration=iconfiguration;
         }
+        public static string key = "adef@@kfxcbv";
+
+        public static string ConvertToEncript(string Password)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Password)) { return ""; }
+                else
+                {
+                    Password+=key;
+                    var passwordBytes = Encoding.UTF8.GetBytes(Password);
+                    return Convert.ToBase64String(passwordBytes);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static string ConvertToDecrypt(string base64EncodeData)
+        {
+            try
+            {
+                string key = "adef@@kfxcbv";
+                if (string.IsNullOrEmpty(base64EncodeData)){ return "";}
+                else
+                {
+                    var base64EncodeBytes = Convert.FromBase64String(base64EncodeData);
+                    var result = Encoding.UTF8.GetString(base64EncodeBytes);
+                    result = result.Substring(0, result.Length - key.Length);
+                    return result;
+                }
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+        }
 
         public string Login(UserLoginModel userLoginModel)
         {
             try
             {
                 //query to check only for email and password
-                var resultLog = fundooContext.UserTable.Where(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password).FirstOrDefault();
+                var resultLog = fundooContext.UserTable.Where(x => x.Email == userLoginModel.Email && x.Password ==ConvertToEncript(userLoginModel.Password)).FirstOrDefault();
 
 
-                if (resultLog != null)
+                if (resultLog != null && ConvertToDecrypt(resultLog.Password) ==  userLoginModel.Password)
                 {
                     //taken userLoginModel to get the stored data used for login
                     //taken userLoginModel to get the stored data used for login
@@ -111,7 +150,7 @@ namespace RepositoryLayer.Service
                 userEntityobj.FirstName = userRegistrationModel.FirstName;
                 userEntityobj.LastName = userRegistrationModel.LastName;
                 userEntityobj.Email = userRegistrationModel.Email;
-                userEntityobj.Password = userRegistrationModel.Password;
+                userEntityobj.Password =ConvertToEncript(userRegistrationModel.Password);
 
                 fundooContext.UserTable.Add(userEntityobj);
                 int result = fundooContext.SaveChanges();
@@ -130,6 +169,7 @@ namespace RepositoryLayer.Service
             }
         }
 
+        
 
         public string GenerateSecurityToken(string email, long UserId)
         {
