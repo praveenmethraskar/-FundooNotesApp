@@ -1,9 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using RepositoryLayer.Context;
+using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooWebApp.Controllers
 {
@@ -12,9 +20,18 @@ namespace FundooWebApp.Controllers
     public class LabelController : ControllerBase
     {
         private readonly ILabelRL iLabelBL;
-        public LabelController(ILabelRL iLabelBL)
+
+        private readonly IMemoryCache memoryCache;
+
+        private readonly IDistributedCache distributedCache;
+
+        private readonly FundooContext fundooContext;
+        public LabelController(ILabelRL iLabelBL, IMemoryCache memoryCache, IDistributedCache distributedCache, FundooContext fundoocontext)
         {
             this.iLabelBL=iLabelBL;
+            this.memoryCache=memoryCache;
+            this.distributedCache=distributedCache;
+            this.fundooContext=fundoocontext;
         }
 
         [Authorize]
@@ -114,6 +131,35 @@ namespace FundooWebApp.Controllers
                 }
             }
             catch(System.Exception ) { throw; }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("redis")]
+
+        public async Task<IActionResult> GetAllCustomersUsingRedisCache()
+        {
+            long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+            var cacheKey = "LabelList";
+            string serializedLabelList;
+            var LabelList = new List<LabelEntity>();
+            var redisLabelList = await distributedCache.GetAsync(cacheKey);
+            if (redisLabelList != null)
+            {
+                serializedLabelList = Encoding.UTF8.GetString(redisLabelList);
+                LabelList = JsonConvert.DeserializeObject<List<LabelEntity>>(serializedLabelList);
+            }
+            else
+            {
+                LabelList = fundooContext.LabelTable.ToList();
+                serializedLabelList = JsonConvert.SerializeObject(LabelList);
+                redisLabelList = Encoding.UTF8.GetBytes(serializedLabelList);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributedCache.SetAsync(cacheKey, redisLabelList, options);
+            }
+            return Ok(LabelList);
         }
 
 
