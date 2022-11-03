@@ -2,9 +2,17 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using RepositoryLayer.Context;
+using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooWebApp.Controllers
 {
@@ -13,9 +21,19 @@ namespace FundooWebApp.Controllers
     public class CollabratorController : ControllerBase
     {
         private readonly ICollabarateRL iCollabarateBL;
-        public CollabratorController(ICollabarateRL iCollabarateBL)
+
+        private readonly IMemoryCache memoryCache;
+
+        private readonly IDistributedCache distributedCache;
+
+        private readonly FundooContext fundooContext;
+
+        public CollabratorController(ICollabarateRL iCollabarateBL, IMemoryCache memoryCache, IDistributedCache distributedCache, FundooContext fundooContext)
         {
             this.iCollabarateBL=iCollabarateBL;
+            this.memoryCache=memoryCache;
+            this.distributedCache=distributedCache;
+            this.fundooContext=fundooContext;
         }
 
 
@@ -95,6 +113,36 @@ namespace FundooWebApp.Controllers
                 }
             }
             catch(System.Exception) { throw; }
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        [Route("redis")]
+
+        public async Task<IActionResult> GetAllCustomersUsingRedisCache()
+        {
+            long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "UserId").Value);
+            var cacheKey = "CollabratorList";
+            string serializedCollabratorList;
+            var CollabratorList = new List<CollabratorEntity>();
+            var redisCollabratorList = await distributedCache.GetAsync(cacheKey);
+            if (redisCollabratorList != null)
+            {
+                serializedCollabratorList = Encoding.UTF8.GetString(redisCollabratorList);
+                CollabratorList = JsonConvert.DeserializeObject<List<CollabratorEntity>>(serializedCollabratorList);
+            }
+            else
+            {
+                CollabratorList = fundooContext.CollabratorTable.ToList();
+                serializedCollabratorList = JsonConvert.SerializeObject(CollabratorList);
+                redisCollabratorList = Encoding.UTF8.GetBytes(serializedCollabratorList);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributedCache.SetAsync(cacheKey, redisCollabratorList, options);
+            }
+            return Ok(CollabratorList);
         }
 
     }
