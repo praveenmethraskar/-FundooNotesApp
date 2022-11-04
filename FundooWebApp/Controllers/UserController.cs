@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using RepositoryLayer.Interface;
+using System;
 using System.Security.Claims;
 
 namespace FundooWebApp.Controllers
@@ -13,9 +15,12 @@ namespace FundooWebApp.Controllers
     {
         private readonly IuserRL iuserBL;
 
-        public UserController(IuserRL iuserBL)
+        private readonly ILogger<UserController> _logger;
+
+        public UserController(IuserRL iuserBL, ILogger<UserController> logger)
         {
             this.iuserBL=iuserBL;
+            _logger=logger;
         } 
         [HttpPost]
         [Route("Registration")]
@@ -27,9 +32,11 @@ namespace FundooWebApp.Controllers
                 if (result != null)
                 {
                     return Ok(new { success = true, message = "Registration successful", data = result });
+                
                 }
                 else
                 {
+                    
                     return BadRequest(new
                     {
                         success = false,
@@ -38,9 +45,9 @@ namespace FundooWebApp.Controllers
 
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -59,13 +66,14 @@ namespace FundooWebApp.Controllers
                 }
                 else
                 {
+                    
                     return BadRequest(new { success = false, message = "Login UnSuccessful" });
                 }
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
