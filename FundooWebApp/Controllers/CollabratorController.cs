@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
@@ -28,12 +29,15 @@ namespace FundooWebApp.Controllers
 
         private readonly FundooContext fundooContext;
 
-        public CollabratorController(ICollabarateRL iCollabarateBL, IMemoryCache memoryCache, IDistributedCache distributedCache, FundooContext fundooContext)
+        private readonly ILogger<CollabratorController> _logger;
+
+        public CollabratorController(ICollabarateRL iCollabarateBL, IMemoryCache memoryCache, IDistributedCache distributedCache, FundooContext fundooContext, ILogger<CollabratorController> logger)
         {
             this.iCollabarateBL=iCollabarateBL;
             this.memoryCache=memoryCache;
             this.distributedCache=distributedCache;
             this.fundooContext=fundooContext;
+            _logger=logger;
         }
 
 
